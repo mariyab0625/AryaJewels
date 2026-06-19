@@ -6,6 +6,8 @@ import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import AppRoutes from "./routes/AppRoutes";
+import BackToTop from "./components/ui/BackToTop";
+import MobileBottomNav from "./components/ui/MobileBottomNav";
 
 const GOOGLE_CLIENT_ID = "875305301037-v8tn8ho3c0rm4lbf7s3bfomulh9a3ogi.apps.googleusercontent.com";
 
@@ -20,6 +22,8 @@ export default function App() {
               <div style={{ height: "54px" }} className="navbar-spacer" />
               <AppRoutes />
               <Footer />
+              <BackToTop />
+              <MobileBottomNav />
             </WishlistProvider>
           </CartProvider>
         </AuthProvider>

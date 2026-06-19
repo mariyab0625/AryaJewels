@@ -10,7 +10,7 @@ function BridalHero() {
   return (
     <section className="bridal-hero-layout" style={{ backgroundColor: "var(--color-bg-main)" }}>
       {/* Left — text */}
-      <div style={{
+      <div className="bridal-hero-text" style={{
         display: "flex", flexDirection: "column", justifyContent: "center",
         padding: "80px 56px 80px 64px", position: "relative", zIndex: 2,
       }}>
@@ -77,7 +77,7 @@ function BridalHero() {
       </div>
 
       {/* Right — large hero image */}
-      <motion.div initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+      <motion.div className="bridal-hero-image" initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
         style={{ position: "relative", overflow: "hidden" }}>
         <img
           src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1200&q=90"
@@ -90,7 +90,27 @@ function BridalHero() {
 
       <style>{`
         @media (max-width: 768px) {
-          .bridal-hero-grid { grid-template-columns: 1fr !important; }
+          .bridal-hero-layout {
+            position: relative;
+            min-height: 100vh;
+            display: block;
+          }
+          .bridal-hero-text {
+            position: relative;
+            z-index: 2;
+            padding: 100px 24px 60px !important;
+            background: linear-gradient(to bottom, rgba(253,246,240,0.92) 0%, rgba(253,246,240,0.75) 100%);
+          }
+          .bridal-hero-image {
+            position: absolute !important;
+            inset: 0;
+            z-index: 1;
+          }
+          .bridal-hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
         }
       `}</style>
     </section>

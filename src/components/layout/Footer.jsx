@@ -43,7 +43,7 @@ export default function Footer() {
   return (
     <footer style={{ backgroundColor: "#1A1714" }}>
       {/* Main */}
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "72px 48px 48px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "72px 48px 48px" }} className="footer-main-pad">
         <div className="footer-grid">
 
           {/* Brand */}
@@ -164,7 +164,7 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div style={{ borderTop: "1px solid #2C2820", padding: "20px 48px" }}>
+      <div style={{ borderTop: "1px solid #2C2820", padding: "20px 24px" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }} className="footer-bottom">
         <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#3A3330" }}>
           © 2026 Arya Collections. All rights reserved.

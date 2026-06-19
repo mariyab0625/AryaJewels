@@ -145,7 +145,7 @@ export default function Collections() {
 
   return (
     <section style={{ backgroundColor: "#f7e7e1ff", padding: "56px 0 48px" }}>
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 48px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 48px" }} className="coll-inner-wrap">
 
         {/* Header */}
         <motion.div
@@ -166,17 +166,29 @@ export default function Collections() {
           </p>
         </motion.div>
 
-        {/* Row 1 — two big cards side by side */}
-        <div className="coll-big-grid">
-          {big.map((item, i) => (
-            <CollectionCard key={item.id} item={item} i={i} heightClass="coll-big" />
-          ))}
+        {/* Desktop grid layout */}
+        <div className="coll-desktop-layout">
+          {/* Row 1 — two big cards side by side */}
+          <div className="coll-big-grid">
+            {big.map((item, i) => (
+              <CollectionCard key={item.id} item={item} i={i} heightClass="coll-big" />
+            ))}
+          </div>
+
+          {/* Row 2 — three small cards */}
+          <div className="coll-small-grid">
+            {small.map((item, i) => (
+              <CollectionCard key={item.id} item={item} i={i + 2} heightClass="coll-small" />
+            ))}
+          </div>
         </div>
 
-        {/* Row 2 — three small cards */}
-        <div className="coll-small-grid">
-          {small.map((item, i) => (
-            <CollectionCard key={item.id} item={item} i={i + 2} heightClass="coll-small" />
+        {/* Mobile horizontal scroll row */}
+        <div className="coll-mobile-scroll">
+          {collections.map((item, i) => (
+            <div key={item.id} className="coll-mobile-card">
+              <CollectionCard item={item} i={i} heightClass="coll-mobile-item" />
+            </div>
           ))}
         </div>
       </div>
@@ -184,9 +196,32 @@ export default function Collections() {
       <style>{`
         .coll-big  { height: 300px; }
         .coll-small { height: 190px; }
+        .coll-mobile-layout { display: none; }
         @media (max-width: 768px) {
           .coll-big  { height: 220px; }
           .coll-small { height: 150px; }
+          .coll-inner-wrap { padding: 0 !important; }
+          .coll-inner-wrap > div:first-child { padding: 0 16px; } /* header */
+          .coll-desktop-layout { display: none !important; }
+          .coll-mobile-scroll {
+            display: flex !important;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 0 16px 8px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+          }
+          .coll-mobile-scroll::-webkit-scrollbar { display: none; }
+          .coll-mobile-card {
+            flex-shrink: 0;
+            width: 160px;
+            height: 200px;
+          }
+          .coll-mobile-item { height: 200px !important; }
+        }
+        @media (min-width: 769px) {
+          .coll-mobile-scroll { display: none !important; }
+          .coll-desktop-layout { display: block !important; }
         }
       `}</style>
     </section>

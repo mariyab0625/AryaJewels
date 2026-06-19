@@ -84,6 +84,11 @@ body {
 
 /* ─── GLOBAL RESPONSIVE UTILITIES ─────────────────────────────────────────── */
 
+/* Mobile bottom nav body padding */
+@media (max-width: 768px) {
+  body { padding-bottom: 64px; }
+}
+
 /* Base font size smaller on mobile */
 @media (max-width: 768px) {
   html { font-size: 15px; }
@@ -92,16 +97,22 @@ body {
 /* Standard section padding */
 .section-pad { padding: 100px 0; }
 @media (max-width: 768px) {
-  .section-pad { padding: 56px 0; }
+  .section-pad { padding: 40px 0; }
 }
 
 /* Standard container padding */
 .container { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
 @media (max-width: 768px) {
-  .container { padding: 0 20px; }
+  .container { padding: 0 16px; }
 }
 @media (max-width: 480px) {
   .container { padding: 0 16px; }
+}
+
+/* Page content/header padding on mobile */
+@media (max-width: 768px) {
+  .page-content-pad { padding: 20px 16px 48px; }
+  .page-header-pad { padding: 24px 16px 20px; }
 }
 
 /* ─── PRODUCT GRIDS ────────────────────────────────────────────────────────── */
@@ -110,19 +121,19 @@ body {
   .product-grid-4 { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
-  .product-grid-4 { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .product-grid-4 { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 @media (max-width: 400px) {
-  .product-grid-4 { grid-template-columns: 1fr; }
+  .product-grid-4 { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ─── BRAND PROMISE ────────────────────────────────────────────────────────── */
 .brand-promise-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
 @media (max-width: 768px) {
-  .brand-promise-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .brand-promise-grid { grid-template-columns: repeat(4, 1fr); gap: 8px; }
 }
 @media (max-width: 400px) {
-  .brand-promise-grid { grid-template-columns: 1fr; }
+  .brand-promise-grid { grid-template-columns: repeat(4, 1fr); gap: 4px; }
 }
 
 /* ─── CATEGORIES ───────────────────────────────────────────────────────────── */
@@ -197,11 +208,15 @@ body {
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
 }
 @media (max-width: 600px) {
-  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; gap: 6px; text-align: center; font-size: 10px; }
+}
+@media (max-width: 400px) {
+  .footer-grid { grid-template-columns: 1fr; gap: 20px; }
 }
 .footer-bottom { display: flex; justify-content: space-between; align-items: center; }
 @media (max-width: 600px) {
-  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
 }
 
 /* ─── SHOP PAGE layout ─────────────────────────────────────────────────────── */
@@ -222,7 +237,7 @@ body {
   .product-grid-3 { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 480px) {
-  .product-grid-3 { grid-template-columns: 1fr; }
+  .product-grid-3 { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ─── WISHLIST / BRIDAL PRODUCTS grids ─────────────────────────────────────── */
@@ -231,7 +246,7 @@ body {
   .wishlist-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
-  .wishlist-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .wishlist-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
 }
 
 /* ─── BRIDAL PROMISE / WHY ARYA grids ──────────────────────────────────────── */
@@ -267,15 +282,18 @@ body {
 @media (max-width: 900px) {
   .related-grid { grid-template-columns: repeat(2, 1fr); }
 }
+@media (max-width: 768px) {
+  .related-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
 
 /* ─── PAGE HEADERS ──────────────────────────────────────────────────────────── */
 .page-header-pad { padding: 48px 48px 36px; }
 @media (max-width: 768px) {
-  .page-header-pad { padding: 32px 20px 24px; }
+  .page-header-pad { padding: 24px 16px 20px; }
 }
 .page-content-pad { padding: 48px 48px 80px; }
 @media (max-width: 768px) {
-  .page-content-pad { padding: 28px 20px 56px; }
+  .page-content-pad { padding: 20px 16px 48px; }
 }
 
 /* ─── HERO section mobile fixes ─────────────────────────────────────────────── */
@@ -296,3 +314,128 @@ body {
 }
 
 
+
+/* ─── MOBILE BODY PADDING for bottom nav ──────────────────────────────────── */
+@media (max-width: 768px) {
+  body { padding-bottom: 64px; }
+}
+
+/* ─── MOBILE SECTION SPACING reductions ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .section-pad { padding: 40px 0 !important; }
+  .container   { padding: 0 16px !important; }
+}
+
+/* ─── PRODUCT GRIDS — 2 columns on all mobile ─────────────────────────────── */
+@media (max-width: 768px) {
+  .product-grid-4 { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+  .product-grid-3 { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+  .related-grid   { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+  .wishlist-grid  { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+}
+
+/* ─── FOOTER — smaller on mobile ──────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .footer-grid { grid-template-columns: 1fr 1fr !important; gap: 20px !important; }
+  footer { padding-bottom: 72px; } /* room above bottom nav */
+}
+
+/* ─── CATEGORIES grid on mobile ────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .cat-grid-6 { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+}
+
+/* ─── BACK TO TOP — shift up on mobile so it clears bottom nav ────────────── */
+@media (max-width: 768px) {
+  .back-to-top-btn { bottom: 76px !important; }
+}
+
+/* ─── PREVENT HORIZONTAL OVERFLOW (right-side gap fix) ────────────────────── */
+html, body, #root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* ─── FOOTER — Get In Touch full width on mobile ──────────────────────────── */
+@media (max-width: 600px) {
+  .footer-main-pad { padding: 40px 16px 32px !important; }
+  /* Make "Get In Touch" span full width in the 2-col grid */
+  .footer-grid > div:last-child {
+    grid-column: 1 / -1;
+  }
+  /* Prevent newsletter input overflow */
+  .footer-grid input[type="email"] {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
+/* ─── BRIDAL HERO — image behind text on mobile ───────────────────────────── */
+@media (max-width: 768px) {
+  .bridal-hero-layout {
+    position: relative;
+    min-height: 85vh;
+    display: block !important;
+  }
+  .bridal-hero-image {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 1;
+    height: 100% !important;
+  }
+  .bridal-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .bridal-hero-text {
+    position: relative;
+    z-index: 2;
+    padding: 90px 24px 48px !important;
+    background: linear-gradient(
+      to bottom,
+      rgba(253,246,240,0.88) 0%,
+      rgba(253,246,240,0.78) 60%,
+      rgba(253,246,240,0.65) 100%
+    );
+  }
+}
+
+/* ─── SHOP content padding mobile ─────────────────────────────────────────── */
+.shop-content-pad { padding: 40px 48px; }
+@media (max-width: 768px) {
+  .shop-content-pad { padding: 24px 16px; }
+}
+
+/* ─── SHOP — mobile filter button vs desktop sidebar ──────────────────────── */
+.desktop-filter-btn { display: flex !important; }
+.mobile-filter-btn  { display: none !important; }
+@media (max-width: 768px) {
+  .desktop-filter-btn { display: none !important; }
+  .mobile-filter-btn  { display: flex !important; }
+  /* Force full-width single column on mobile regardless of sidebar state */
+  .shop-layout-with-sidebar { grid-template-columns: 1fr !important; }
+  .shop-layout-with-sidebar > aside { display: none !important; }
+}
+
+/* ─── REDUCE ALL SECTION MARGINS on mobile ────────────────────────────────── */
+@media (max-width: 768px) {
+  section { padding-top: 36px !important; padding-bottom: 36px !important; }
+  /* Preserve dark header sections */
+  section[style*="background-color: #2E221E"],
+  section[style*="backgroundColor: #2E221E"] { padding: 28px 0 !important; }
+}
+
+/* ─── BRIDAL VIDEOS — side by side on mobile ──────────────────────────────── */
+@media (max-width: 768px) {
+  .bridal-video-flex {
+    flex-wrap: nowrap !important;
+    gap: 10px !important;
+    justify-content: stretch !important;
+  }
+  .bridal-video-flex > div {
+    width: calc(50% - 5px) !important;
+    height: 280px !important;
+    flex-shrink: 0;
+  }
+}

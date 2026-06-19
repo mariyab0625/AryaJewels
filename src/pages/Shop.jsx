@@ -70,14 +70,14 @@ function FilterSection({ title, children }) {
 
 // ─── Main Shop page ───────────────────────────────────────────────────────────
 export default function Shop() {
-  const [search, setSearch]           = useState("");
-  const [category, setCategory]       = useState("All");
-  const [material, setMaterial]       = useState("All");
-  const [priceIdx, setPriceIdx]       = useState(0);
-  const [sort, setSort]               = useState("featured");
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [search, setSearch]             = useState("");
+  const [category, setCategory]         = useState("All");
+  const [material, setMaterial]         = useState("All");
+  const [priceIdx, setPriceIdx]         = useState(0);
+  const [sort, setSort]                 = useState("featured");
+  const [sidebarOpen, setSidebarOpen]   = useState(true);
+  const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
 
-  // Tell navbar: not over video
   useEffect(() => {
     window.scrollTo({ top: 0 });
     window.dispatchEvent(new CustomEvent("videoHeroScroll", { detail: { progress: 1, videoGone: true } }));
@@ -111,6 +111,68 @@ export default function Shop() {
 
   return (
     <main style={{ backgroundColor: "var(--color-bg-main)", minHeight: "100vh" }}>
+
+      {/* Mobile filter drawer */}
+      <AnimatePresence>
+        {mobileFilterOpen && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              onClick={() => setMobileFilterOpen(false)}
+              style={{ position: "fixed", inset: 0, backgroundColor: "rgba(46,34,30,0.45)", zIndex: 200, backdropFilter: "blur(3px)" }} />
+            <motion.div
+              initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
+              style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 210, backgroundColor: "var(--color-bg-main)", borderTopLeftRadius: "16px", borderTopRightRadius: "16px", padding: "20px 20px 40px", maxHeight: "80vh", overflowY: "auto" }}
+            >
+              {/* Handle */}
+              <div style={{ width: "40px", height: "4px", borderRadius: "2px", backgroundColor: "rgba(46,34,30,0.2)", margin: "0 auto 20px" }} />
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+                <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "22px", fontWeight: 400, color: "#2E221E" }}>Filters</p>
+                {activeFilterCount > 0 && (
+                  <button onClick={clearAll} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#CE7661", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                    Clear All ({activeFilterCount})
+                  </button>
+                )}
+              </div>
+              <FilterSection title="Category">
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {CATEGORIES.map((c) => (
+                    <button key={c} onClick={() => setCategory(c)}
+                      style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", padding: "8px 16px", border: "1px solid", borderColor: category === c ? "#CE7661" : "rgba(46,34,30,0.2)", backgroundColor: category === c ? "#CE7661" : "transparent", color: category === c ? "white" : "#2E221E", cursor: "pointer", borderRadius: "2px" }}>
+                      {c}
+                    </button>
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection title="Material">
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {MATERIALS.map((m) => (
+                    <button key={m} onClick={() => setMaterial(m)}
+                      style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", padding: "8px 16px", border: "1px solid", borderColor: material === m ? "#CE7661" : "rgba(46,34,30,0.2)", backgroundColor: material === m ? "#CE7661" : "transparent", color: material === m ? "white" : "#2E221E", cursor: "pointer", borderRadius: "2px" }}>
+                      {m}
+                    </button>
+                  ))}
+                </div>
+              </FilterSection>
+              <FilterSection title="Price Range">
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                  {PRICE_RANGES.map((r, i) => (
+                    <button key={r.label} onClick={() => setPriceIdx(i)}
+                      style={{ textAlign: "left", fontFamily: "Inter, sans-serif", fontSize: "13px", background: "none", border: "none", cursor: "pointer", color: priceIdx === i ? "#CE7661" : "#2E221E", fontWeight: priceIdx === i ? 600 : 400, padding: "6px 0", display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: priceIdx === i ? "#CE7661" : "transparent", border: "1px solid", borderColor: priceIdx === i ? "#CE7661" : "rgba(46,34,30,0.3)", flexShrink: 0 }} />
+                      {r.label}
+                    </button>
+                  ))}
+                </div>
+              </FilterSection>
+              <button onClick={() => setMobileFilterOpen(false)}
+                style={{ width: "100%", backgroundColor: "#2E221E", color: "white", border: "none", padding: "14px", fontFamily: "Inter, sans-serif", fontSize: "10px", fontWeight: 600, letterSpacing: "0.25em", textTransform: "uppercase", cursor: "pointer", marginTop: "8px" }}>
+                Show {filtered.length} Results
+              </button>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Page header */}
       <div className="shop-header-pad">
@@ -148,21 +210,26 @@ export default function Shop() {
         </div>
       </div>
 
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 48px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 48px" }} className="shop-content-pad">
 
         {/* Toolbar */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "32px", flexWrap: "wrap", gap: "12px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-            <button onClick={() => setSidebarOpen((o) => !o)} style={{ display: "flex", alignItems: "center", gap: "7px", background: "none", border: "1px solid rgba(46,34,30,0.2)", padding: "8px 16px", cursor: "pointer", fontFamily: "Inter, sans-serif", fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#2E221E" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px", flexWrap: "wrap", gap: "10px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            {/* Desktop sidebar toggle */}
+            <button onClick={() => setSidebarOpen((o) => !o)} className="desktop-filter-btn" style={{ display: "flex", alignItems: "center", gap: "7px", background: "none", border: "1px solid rgba(46,34,30,0.2)", padding: "8px 16px", cursor: "pointer", fontFamily: "Inter, sans-serif", fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#2E221E" }}>
+              <SlidersHorizontal size={13} /> Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
+            </button>
+            {/* Mobile filter button */}
+            <button onClick={() => setMobileFilterOpen(true)} className="mobile-filter-btn" style={{ display: "none", alignItems: "center", gap: "7px", background: "none", border: "1px solid rgba(46,34,30,0.2)", padding: "8px 16px", cursor: "pointer", fontFamily: "Inter, sans-serif", fontSize: "10px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#2E221E" }}>
               <SlidersHorizontal size={13} /> Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
             </button>
             {activeFilterCount > 0 && (
               <button onClick={clearAll} style={{ background: "none", border: "none", cursor: "pointer", fontFamily: "Inter, sans-serif", fontSize: "10px", color: "#CE7661", letterSpacing: "0.1em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "5px" }}>
-                <X size={11} /> Clear All
+                <X size={11} /> Clear
               </button>
             )}
             <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#8A8078" }}>
-              {filtered.length} {filtered.length === 1 ? "product" : "products"}
+              {filtered.length} items
             </p>
           </div>
 

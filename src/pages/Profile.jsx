@@ -108,32 +108,131 @@ function OrdersTab({ orders }) {
   );
 }
 
-function AddressesTab({ addresses, removeAddress }) {
-  if (addresses.length === 0) return (
-    <div style={{ textAlign: "center", padding: "60px 0" }}>
-      <MapPin size={32} color="#EBC9BE" style={{ marginBottom: "16px" }} />
-      <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", fontWeight: 300, color: "#2E221E", marginBottom: "8px" }}>No saved addresses</p>
-      <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8A8078" }}>Save an address during checkout to see it here.</p>
-    </div>
-  );
+function AddressesTab({ addresses, removeAddress, addAddress }) {
+  const [showForm, setShowForm] = useState(false);
+  const [cityLoading, setCityLoading] = useState(false);
+  const [form, setForm] = useState({ name: "", phone: "", flatNo: "", area: "", city: "", state: "", pincode: "", landmark: "" });
+  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
+
+  const handleCity = async (city) => {
+    setForm((f) => ({ ...f, city }));
+    if (city.length < 3) return;
+    setCityLoading(true);
+    try {
+      const res = await fetch(`https://nominatim.openstreetmap.org/search?city=${encodeURIComponent(city)}&country=India&format=json&limit=1`, { headers: { "Accept-Language": "en" } });
+      const data = await res.json();
+      if (data[0]) {
+        const parts = data[0].display_name.split(", ");
+        const state = parts[parts.length - 2] || "";
+        // Try postcode
+        const detailRes = await fetch(`https://nominatim.openstreetmap.org/details?osmtype=${data[0].osm_type.charAt(0).toUpperCase()}&osmid=${data[0].osm_id}&format=json&addressdetails=1`);
+        const detail = await detailRes.json();
+        const postcode = detail?.address?.postcode || "";
+        setForm((f) => ({ ...f, state: f.state || state, pincode: f.pincode || postcode }));
+      }
+    } catch { /* silent */ }
+    setCityLoading(false);
+  };
+
+  const handleSave = () => {
+    if (!form.name || !form.phone || !form.city) return;
+    addAddress(form);
+    setForm({ name: "", phone: "", flatNo: "", area: "", city: "", state: "", pincode: "", landmark: "" });
+    setShowForm(false);
+  };
+
+  const inputStyle = { width: "100%", padding: "10px 12px", fontFamily: "Inter, sans-serif", fontSize: "12px", border: "1px solid rgba(46,34,30,0.2)", backgroundColor: "#FDF6F0", color: "#2E221E", outline: "none", boxSizing: "border-box" };
+  const labelStyle = { fontFamily: "Inter, sans-serif", fontSize: "9px", fontWeight: 600, letterSpacing: "0.2em", textTransform: "uppercase", color: "#6B5750", display: "block", marginBottom: "5px" };
+
   return (
-    <div className="addresses-grid">
-      {addresses.map((addr) => (
-        <div key={addr.id} style={{ border: "1px solid rgba(46,34,30,0.1)", padding: "20px", position: "relative" }}>
-          <button onClick={() => removeAddress(addr.id)} style={{ position: "absolute", top: "12px", right: "12px", background: "none", border: "none", cursor: "pointer", color: "#8A8078" }}><X size={13} /></button>
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 600, color: "#2E221E", marginBottom: "6px" }}>{addr.name}</p>
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#6B5750", lineHeight: 1.6 }}>
-            {addr.area}, {addr.landmark && `${addr.landmark}, `}{addr.city}<br />{addr.state} — {addr.pincode}
-          </p>
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#8A8078", marginTop: "6px" }}>{addr.phone}</p>
+    <div>
+      {/* Add button */}
+      <div style={{ marginBottom: "24px" }}>
+        <button onClick={() => setShowForm((s) => !s)} style={{ display: "inline-flex", alignItems: "center", gap: "7px", backgroundColor: "#CE7661", color: "white", border: "none", padding: "11px 20px", cursor: "pointer", fontFamily: "Inter, sans-serif", fontSize: "9px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase" }}>
+          {showForm ? "Cancel" : "+ Add New Address"}
+        </button>
+      </div>
+
+      {/* Inline add form */}
+      {showForm && (
+        <div style={{ border: "1px solid rgba(46,34,30,0.12)", padding: "24px", marginBottom: "28px", backgroundColor: "#F7F1EB" }}>
+          <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "18px", fontWeight: 400, color: "#2E221E", marginBottom: "20px" }}>New Address</p>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+            <div style={{ gridColumn: "1/-1" }}>
+              <label style={labelStyle}>Full Name</label>
+              <input style={inputStyle} type="text" value={form.name} onChange={set("name")} placeholder="Recipient name"
+                onFocus={(e) => e.target.style.borderColor = "#CE7661"} onBlur={(e) => e.target.style.borderColor = "rgba(46,34,30,0.2)"} />
+            </div>
+            <div style={{ gridColumn: "1/-1" }}>
+              <label style={labelStyle}>Phone</label>
+              <input style={inputStyle} type="tel" value={form.phone} onChange={set("phone")} placeholder="10-digit number"
+                onFocus={(e) => e.target.style.borderColor = "#CE7661"} onBlur={(e) => e.target.style.borderColor = "rgba(46,34,30,0.2)"} />
+            </div>
+            <div style={{ gridColumn: "1/-1" }}>
+              <label style={labelStyle}>Flat / House No.</label>
+              <input style={inputStyle} type="text" value={form.flatNo} onChange={set("flatNo")} placeholder="e.g. Flat 4B, Sunshine Apts"
+                onFocus={(e) => e.target.style.borderColor = "#CE7661"} onBlur={(e) => e.target.style.borderColor = "rgba(46,34,30,0.2)"} />
+            </div>
+            <div>
+              <label style={labelStyle}>City {cityLoading && <span style={{ color: "#CE7661" }}>…</span>}</label>
+              <input style={inputStyle} type="text" value={form.city} onChange={(e) => handleCity(e.target.value)} placeholder="City"
+                onFocus={(e) => e.target.style.borderColor = "#CE7661"} onBlur={(e) => e.target.style.borderColor = "rgba(46,34,30,0.2)"} />
+            </div>
+            <div>
+              <label style={labelStyle}>State</label>
+              <input style={inputStyle} type="text" value={form.state} onChange={set("state")} placeholder="Auto-filled"
+                onFocus={(e) => e.target.style.borderColor = "#CE7661"} onBlur={(e) => e.target.style.borderColor = "rgba(46,34,30,0.2)"} />
+            </div>
+            <div>
+              <label style={labelStyle}>Area / Locality</label>
+              <input style={inputStyle} type="text" value={form.area} onChange={set("area")} placeholder="Area"
+                onFocus={(e) => e.target.style.borderColor = "#CE7661"} onBlur={(e) => e.target.style.borderColor = "rgba(46,34,30,0.2)"} />
+            </div>
+            <div>
+              <label style={labelStyle}>Pincode</label>
+              <input style={inputStyle} type="text" value={form.pincode} onChange={set("pincode")} placeholder="Auto-filled" maxLength={6}
+                onFocus={(e) => e.target.style.borderColor = "#CE7661"} onBlur={(e) => e.target.style.borderColor = "rgba(46,34,30,0.2)"} />
+            </div>
+            <div style={{ gridColumn: "1/-1" }}>
+              <label style={labelStyle}>Landmark (optional)</label>
+              <input style={inputStyle} type="text" value={form.landmark} onChange={set("landmark")} placeholder="Near temple, school, etc."
+                onFocus={(e) => e.target.style.borderColor = "#CE7661"} onBlur={(e) => e.target.style.borderColor = "rgba(46,34,30,0.2)"} />
+            </div>
+          </div>
+          <button onClick={handleSave} disabled={!form.name || !form.phone || !form.city}
+            style={{ marginTop: "16px", backgroundColor: "#CE7661", color: "white", border: "none", padding: "12px 24px", cursor: "pointer", fontFamily: "Inter, sans-serif", fontSize: "9px", fontWeight: 600, letterSpacing: "0.22em", textTransform: "uppercase", opacity: (!form.name || !form.phone || !form.city) ? 0.5 : 1 }}>
+            Save Address
+          </button>
         </div>
-      ))}
+      )}
+
+      {/* Saved addresses */}
+      {addresses.length === 0 && !showForm ? (
+        <div style={{ textAlign: "center", padding: "40px 0" }}>
+          <MapPin size={32} color="#EBC9BE" style={{ marginBottom: "16px" }} />
+          <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "24px", fontWeight: 300, color: "#2E221E", marginBottom: "8px" }}>No saved addresses</p>
+          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#8A8078" }}>Add an address above.</p>
+        </div>
+      ) : (
+        <div className="addresses-grid">
+          {addresses.map((addr) => (
+            <div key={addr.id} style={{ border: "1px solid rgba(46,34,30,0.1)", padding: "20px", position: "relative" }}>
+              <button onClick={() => removeAddress(addr.id)} style={{ position: "absolute", top: "12px", right: "12px", background: "none", border: "none", cursor: "pointer", color: "#8A8078" }}><X size={13} /></button>
+              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "12px", fontWeight: 600, color: "#2E221E", marginBottom: "6px" }}>{addr.name}</p>
+              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#6B5750", lineHeight: 1.6 }}>
+                {addr.flatNo && `${addr.flatNo}, `}{addr.area}, {addr.landmark && `${addr.landmark}, `}{addr.city}<br />{addr.state} — {addr.pincode}
+              </p>
+              <p style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", color: "#8A8078", marginTop: "6px" }}>{addr.phone}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
 
 export default function Profile() {
-  const { user, logout, updateProfile, orders, addresses, removeAddress } = useAuth();
+  const { user, logout, updateProfile, orders, addresses, removeAddress, addAddress } = useAuth();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("profile");
 
@@ -180,7 +279,7 @@ export default function Profile() {
             <motion.div key={activeTab} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }}>
               {activeTab === "profile"   && <ProfileTab user={user} updateProfile={updateProfile} logout={logout} navigate={navigate} />}
               {activeTab === "orders"    && <OrdersTab orders={orders} />}
-              {activeTab === "addresses" && <AddressesTab addresses={addresses} removeAddress={removeAddress} />}
+              {activeTab === "addresses" && <AddressesTab addresses={addresses} removeAddress={removeAddress} addAddress={addAddress} />}
             </motion.div>
           </AnimatePresence>
           </div>

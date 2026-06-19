@@ -30,7 +30,7 @@ export default function Testimonials() {
   useEffect(() => {
     const timer = setInterval(() => {
       setCenter((c) => (c + 1) % testimonials.length);
-    }, 2000);
+    }, 5000);
     return () => clearInterval(timer);
   }, []);
 
