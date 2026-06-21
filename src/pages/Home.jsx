@@ -1,10 +1,8 @@
 import VideoHero from "../components/home/VideoHero";
 import Hero from "../components/home/Hero";
 import BrandPromise from "../components/home/BrandPromise";
-import AnnouncementBar from "../components/layout/AnnouncementBar";
-import Categories from "../components/home/Categories";
-import FeaturedProducts from "../components/home/FeaturedProducts";
 import Collections from "../components/home/Collections";
+import FeaturedProducts from "../components/home/FeaturedProducts";
 import Testimonials from "../components/home/Testimonials";
 import InstagramGallery from "../components/home/InstagramGallery";
 
@@ -20,11 +18,8 @@ export default function Home() {
         <Hero />
       </div>
       <BrandPromise />
-      {/* Full-width announcement bar between Hero content and Shop by Category */}
-      <AnnouncementBar />
-      <Categories />
-      <FeaturedProducts />
       <Collections />
+      <FeaturedProducts />
       <Testimonials />
       <InstagramGallery />
     </main>

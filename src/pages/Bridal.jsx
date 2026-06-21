@@ -8,115 +8,90 @@ import ProductCard from "../components/product/ProductCard";
 // ─── HERO ─────────────────────────────────────────────────────────────────────
 function BridalHero() {
   return (
-    <section className="bridal-hero-layout" style={{ backgroundColor: "var(--color-bg-main)" }}>
-      {/* Left — text */}
-      <div className="bridal-hero-text" style={{
-        display: "flex", flexDirection: "column", justifyContent: "center",
-        padding: "80px 56px 80px 64px", position: "relative", zIndex: 2,
-      }}>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.1 }}
-          style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "20px" }}>
-          <span style={{ width: "24px", height: "1px", backgroundColor: "var(--color-accent-rust)" }} />
-          <p style={{ fontFamily: "Inter, sans-serif", fontSize: "10px", fontWeight: 600, letterSpacing: "0.35em", color: "var(--color-accent-rust)", textTransform: "uppercase" }}>
-            ARYAjewels Bridal
-          </p>
-        </motion.div>
+    <section style={{ backgroundColor: "var(--color-bg-main)", padding: "64px 48px 56px" }} className="bridal-hero-simple">
+      <div style={{ maxWidth: "1100px", margin: "0 auto" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "56px", alignItems: "center" }} className="bridal-hero-inner">
 
-        <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.2 }}
-          style={{ fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(42px, 5.5vw, 72px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "0.01em", color: "var(--color-text-dark)", marginBottom: "24px" }}>
-          Begin your<br />
-          <span style={{ fontStyle: "italic", color: "var(--color-accent-rust)" }}>forever</span><br />
-          in radiance
-        </motion.h1>
-
-        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
-          style={{ fontFamily: "Inter, sans-serif", fontSize: "13px", lineHeight: 1.85, color: "var(--color-text-light)", maxWidth: "380px", marginBottom: "36px" }}>
-          Every piece in our bridal collection is handcrafted by master artisans — 
-          designed to carry the weight of your most cherished moments and the lightness of joy.
-        </motion.p>
-
-        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.55 }}
-          style={{ display: "flex", gap: "14px", flexWrap: "wrap" }}>
-          <Link to="/shop" style={{
-            display: "inline-flex", alignItems: "center", gap: "8px",
-            backgroundColor: "var(--color-accent-rust)", color: "white",
-            padding: "14px 30px", fontFamily: "Inter, sans-serif",
-            fontSize: "10px", fontWeight: 600, letterSpacing: "0.2em",
-            textTransform: "uppercase", textDecoration: "none", transition: "all 0.3s ease",
-          }}
-            onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#B9523C"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "var(--color-accent-rust)"; e.currentTarget.style.transform = "translateY(0)"; }}
+          {/* Left — stacked polaroid-style images */}
+          <motion.div
+            initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            style={{ position: "relative", height: "380px" }}
           >
-            Shop Bridal <ArrowRight size={11} />
-          </Link>
-          <Link to="/contact" style={{
-            display: "inline-flex", alignItems: "center", gap: "8px",
-            border: "1px solid rgba(46,34,30,0.25)", color: "var(--color-text-dark)",
-            padding: "14px 30px", fontFamily: "Inter, sans-serif",
-            fontSize: "10px", fontWeight: 500, letterSpacing: "0.2em",
-            textTransform: "uppercase", textDecoration: "none", transition: "all 0.3s ease",
-          }}
-            onMouseEnter={(e) => { e.currentTarget.style.borderColor = "var(--color-accent-rust)"; e.currentTarget.style.color = "var(--color-accent-rust)"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(46,34,30,0.25)"; e.currentTarget.style.color = "var(--color-text-dark)"; }}
-          >
-            Book Consultation
-          </Link>
-        </motion.div>
+            <div style={{
+              position: "absolute", top: "16px", left: "10px", width: "200px", height: "240px",
+              border: "8px solid white", overflow: "hidden",
+              transform: "rotate(-5deg)", boxShadow: "0 8px 28px rgba(46,34,30,0.12)",
+            }}>
+              <img src="https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&q=85"
+                alt="" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+            </div>
+            <div style={{
+              position: "absolute", top: "52px", left: "60px", width: "200px",
+              border: "8px solid white", overflow: "visible",
+              transform: "rotate(3deg)", boxShadow: "0 12px 36px rgba(46,34,30,0.16)",
+              backgroundColor: "white",
+            }}>
+              <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500&q=85"
+                alt="" style={{ width: "100%", height: "230px", objectFit: "cover", display: "block" }} />
+              <p style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: "12px", fontStyle: "italic", color: "#6B5750", textAlign: "center", padding: "8px 0 4px" }}>
+                Bridal Collection
+              </p>
+            </div>
+          </motion.div>
 
-        {/* Decorative dots */}
-        <div style={{ display: "flex", gap: "8px", marginTop: "48px" }}>
-          {["22K Gold", "BIS Certified", "Handcrafted"].map((tag) => (
-            <span key={tag} style={{
-              fontFamily: "Inter, sans-serif", fontSize: "8px", fontWeight: 500,
-              letterSpacing: "0.18em", textTransform: "uppercase",
-              color: "var(--color-accent-rust)", border: "1px solid rgba(206,118,97,0.3)",
-              padding: "5px 12px",
-            }}>{tag}</span>
-          ))}
+          {/* Right — editorial display text */}
+          <div>
+            <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.15 }}
+              style={{ fontFamily: "Inter, sans-serif", fontSize: "9px", fontWeight: 600, letterSpacing: "0.45em", textTransform: "uppercase", color: "#CE7661", marginBottom: "14px" }}>
+              ARYAjewels · Bridal Edit 2025
+            </motion.p>
+
+            <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.25 }}
+              style={{ margin: "0 0 6px", lineHeight: 1.0 }}>
+              <span style={{ display: "block", fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(52px, 8vw, 96px)", fontWeight: 400, letterSpacing: "0.04em", textTransform: "uppercase", color: "#2E221E" }}>BRIDAL</span>
+              <span style={{ display: "block", fontFamily: "'Cormorant Garamond', Georgia, serif", fontSize: "clamp(36px, 5.5vw, 68px)", fontStyle: "italic", fontWeight: 300, color: "#CE7661", letterSpacing: "0.06em" }}>Collection</span>
+            </motion.h1>
+
+            <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.45 }}
+              style={{ fontFamily: "Inter, sans-serif", fontSize: "11px", letterSpacing: "0.22em", textTransform: "uppercase", color: "#8A8078", marginTop: "14px", marginBottom: "28px" }}>
+              Handcrafted for your forever moment
+            </motion.p>
+
+            <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.55 }}
+              style={{ display: "flex", gap: "12px", flexWrap: "wrap", alignItems: "center" }}>
+              <Link to="/shop" style={{ display: "inline-flex", alignItems: "center", gap: "8px", backgroundColor: "#CE7661", color: "white", padding: "13px 28px", fontFamily: "Inter, sans-serif", fontSize: "9px", fontWeight: 600, letterSpacing: "0.25em", textTransform: "uppercase", textDecoration: "none", transition: "all 0.3s ease" }}
+                onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#B9523C"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#CE7661"; e.currentTarget.style.transform = "translateY(0)"; }}>
+                Shop Bridal <ArrowRight size={10} />
+              </Link>
+              <Link to="/contact" style={{ display: "inline-flex", alignItems: "center", gap: "8px", border: "1px solid rgba(46,34,30,0.22)", color: "#2E221E", padding: "13px 28px", fontFamily: "Inter, sans-serif", fontSize: "9px", fontWeight: 500, letterSpacing: "0.25em", textTransform: "uppercase", textDecoration: "none", transition: "all 0.3s ease" }}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = "#CE7661"; e.currentTarget.style.color = "#CE7661"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.borderColor = "rgba(46,34,30,0.22)"; e.currentTarget.style.color = "#2E221E"; }}>
+                Book Consultation
+              </Link>
+            </motion.div>
+
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, delay: 0.7 }}
+              style={{ display: "flex", gap: "8px", marginTop: "24px", flexWrap: "wrap" }}>
+              {["22K Gold", "BIS Certified", "Handcrafted", "Custom Sets"].map((tag) => (
+                <span key={tag} style={{ fontFamily: "Inter, sans-serif", fontSize: "7px", fontWeight: 500, letterSpacing: "0.18em", textTransform: "uppercase", color: "#CE7661", border: "1px solid rgba(206,118,97,0.3)", padding: "4px 10px" }}>{tag}</span>
+              ))}
+            </motion.div>
+          </div>
         </div>
       </div>
 
-      {/* Right — large hero image */}
-      <motion.div className="bridal-hero-image" initial={{ opacity: 0, scale: 1.04 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        style={{ position: "relative", overflow: "hidden" }}>
-        <img
-          src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1200&q=90"
-          alt="Bridal collection"
-          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", display: "block" }}
-        />
-        {/* Subtle left-edge fade so it blends into the text side */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, var(--color-bg-main) 0%, transparent 18%)" }} />
-      </motion.div>
-
       <style>{`
         @media (max-width: 768px) {
-          .bridal-hero-layout {
-            position: relative;
-            min-height: 100vh;
-            display: block;
-          }
-          .bridal-hero-text {
-            position: relative;
-            z-index: 2;
-            padding: 100px 24px 60px !important;
-            background: linear-gradient(to bottom, rgba(253,246,240,0.92) 0%, rgba(253,246,240,0.75) 100%);
-          }
-          .bridal-hero-image {
-            position: absolute !important;
-            inset: 0;
-            z-index: 1;
-          }
-          .bridal-hero-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
+          .bridal-hero-simple { padding: 40px 20px 36px !important; }
+          .bridal-hero-inner { grid-template-columns: 1fr !important; gap: 28px !important; }
+          .bridal-hero-inner > div:first-child { height: 260px !important; }
         }
       `}</style>
     </section>
   );
 }
-
 // ─── PROMISE STRIP ────────────────────────────────────────────────────────────
 function BridalPromise() {
   const items = [
